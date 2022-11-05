@@ -9,5 +9,7 @@ command_list = {
     "четверг": bot.command_thursday,
     "пятница": bot.command_friday,
     "суббота": bot.command_saturday, 
+    "клавиатура": bot.command_keyboard,
+    "ошибка": bot.command_error
 }
 bot.start(command_list)
