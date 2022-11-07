@@ -9,8 +9,8 @@ if __name__ == "__main__":
         "среда": bot.command_wednesday,
         "четверг": bot.command_thursday,
         "пятница": bot.command_friday,
-        "суббота": bot.command_saturday, 
+        "суббота": bot.command_saturday,
         "клавиатура": bot.command_keyboard,
-        "ошибка": bot.command_error
+        "ошибка": bot.command_error,
     }
     bot.start(COMMAND_LIST)
