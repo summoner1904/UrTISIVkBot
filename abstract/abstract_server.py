@@ -19,6 +19,7 @@ class AbstractBaseServer(ABC):
         """
         pass
 
+
 class AbsctractKeyboardMixin(ABC):
     @abstractmethod
     def get_standart_keyboard(self) -> None:
