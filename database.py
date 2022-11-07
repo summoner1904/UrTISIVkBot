@@ -17,6 +17,9 @@ saturday = ['1. Информатика - лекция', '2. Информатик
 
 #Формирование даты
 class Today:
+    """
+    Класс, отвечающий за формирование актуальной даты.
+    """
     today = datetime.datetime.now()
     today_str = today.strftime("%d-%m-%y")
     today_lst = today_str.split("-")
@@ -24,51 +27,48 @@ class Today:
     mounth = today_lst[1]
 
 #Понедельник
-mondaay = []
-if Today.day == "07" or Today.day == "21":
-    if Today.mounth == "11":
-        for i in monday:
-            mondaay.append(i)
-
-elif Today.day == "05" or Today.day == "19":
-    if Today.mounth == "12":
-        for i in monday:
-            mondaay.append(i)
+monday_upd = []
+if Today.mounth == "11" or Today.mounth == "12" and (Today.day == "07" or Today.day == "21" or Today.day == "05" or Today.day == "19"):
+    for i in monday:
+        monday_upd.append(i)
 
 else:
-    mondaay = monday[2::]
+    monday_upd = monday[2::]
     if len(mondaay) == 0:
         mondaay.append("Ура! Пар нет.")
 
 #Вторник
-tuesdaay = []
+tuesday_upd = []
 if Today.mounth == "10" or Today.mounth == "11":
     for i in tuesday:
-        tuesdaay.append(i)
+        tuesday_upd.append(i)
+
 elif Today.mounth == "12":
     tuesday[3] = "Инженерная и компьютерная графика - лаб. раб"
     for i in tuesday:
-        tuesdaay.append(i)
+        tuesday_upd.append(i)
+
 else:
     for i in tuesday[1::]:
-        tuesdaay.append(i)
+        tuesday_upd.append(i)
     
+
 #Среда
-wednesdaay = []
-if Today.day == "16" or Today.day == "23" or Today.day == "30":
-    if Today.mounth == "11":
+wednesday_upd = []
+if Today.mounth == "11" and (Today.day == "16" or Today.day == "23" or Today.day == "30"):
         wednesday[1] == "Физическая культура и спорт - практика"
         for i in wednesday:
-            wednesdaay.append(i)
+            wednesday_upd.append(i)
 else:
     for i in wednesday:
-        wednesdaay.append(i)
+        wednesday_upd.append(i)
 
 #Пятница
-fridaay = []
+friday_upd = []
 if Today.day == "11" and Today.mounth == "11":
     friday[0] = "Физика - лекция"
     for i in friday:
-        fridaay.append(i)
+        friday_upd.append(i)
 else:
-    fridaay = friday
+    friday_upd = friday
+
