@@ -5,7 +5,10 @@ class AbstractBaseServer(ABC):
     @abstractmethod
     def start(self) -> None:
         """
-        Метод работает с командами из словаря и классом Today.
+        Метод отвечает за инициализацию command_list. Слушает longpoll.
+        Работает с классом Today - запрашивает дату. Вызывает метод command_worker
+        и передает ему event.
+
         :return: None
         """
         pass
