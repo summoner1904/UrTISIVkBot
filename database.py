@@ -1,9 +1,27 @@
 import datetime
 
 
-monday = ["2. Информатика - лаб. раб. ", "3. Информатика - лаб. раб"]
+class Today:
+    """
+    Класс, отвечающий за формирование актуальной даты.
+    :return: today_lst (список с текущим днем и месяцем)
+    """
+    @classmethod
+    def update_date(cls):
+        today = datetime.datetime.now()
+        today_str = today.strftime("%d-%m-%y")
+        today_lst = today_str.split("-")
+        return today_lst
 
-tuesday = [
+
+day = Today.update_date()[0]
+mounth = Today.update_date()[1]
+
+
+#Приписка usually означает, что это стандартное расписание на этот день недели.
+monday_usually = ["2. Информатика - лаб. раб. ", "3. Информатика - лаб. раб"]
+
+tuesday_usually = [
     "1. Физика - лаб. раб.",
     "2. Высшмат - практика",
     "3. Ин.Яз - практика",
@@ -11,86 +29,91 @@ tuesday = [
     "5. Час куратора",
 ]
 
-wednesday = [
+wednesday_usually = [
     "2. ОТЦ - практика",
     "3. Физика - практика",
     "4. Высшмат - практика",
     "5. Инженерная и компьютерная графика - лаб. раб.",
 ]
 
-thursday = ["3. Информатика - практика"]
+thursday_usually = ["3. Информатика - практика"]
 
-friday = [
+friday_usually = [
     "2. Элективные дисциплины по физической культуре и спорту",
     "3. Высшмат - лекция",
     "4. ОТЦ - лекция",
 ]
 
-saturday = ["1. Информатика - лекция", "2. Информатика - лекция"]
+saturday_usually = ["1. Информатика - лекция", "2. Информатика - лекция"]
 
-# Формирование даты
-class Today:
-    """
-    Класс, отвечающий за формирование актуальной даты.
-    """
 
-    today = datetime.datetime.now()
-    today_str = today.strftime("%d-%m-%y")
-    today_lst = today_str.split("-")
-    day = today_lst[0]
-    mounth = today_lst[1]
-
+# Приписка actually означает, что расписание на этот день недели может изменяться в зависимости от дня/месяца.
+# Всего дней в неделе, когда расписание может измениться, четыре: понедельник, вторник, среда, пятница. К ним
+# добавляется приписка actually. Эти же списки выводятся в словаре raspisanie_dict.
 
 # Понедельник
-monday_upd = []
+monday_actually = []
 if (
-    Today.mounth == "11"
-    or Today.mounth == "12"
+    mounth == "11"
+    or mounth == "12"
     and (
-        Today.day == "07" or Today.day == "21" or Today.day == "05" or Today.day == "19"
+        day == "07" or day == "21" or day == "05" or day == "19"
     )
 ):
-    for i in monday:
-        monday_upd.append(i)
+    for i in monday_usually:
+        monday_actually.append(i)
 
 else:
-    monday_upd = monday[2::]
+    monday_actually = monday_usually[2::]
     if len(mondaay) == 0:
         mondaay.append("Ура! Пар нет.")
 
 # Вторник
-tuesday_upd = []
-if Today.mounth == "10" or Today.mounth == "11":
-    for i in tuesday:
-        tuesday_upd.append(i)
+tuesday_actually = []
+if mounth == "10" or mounth == "11":
+    for i in tuesday_usually:
+        tuesday_actually.append(i)
 
-elif Today.mounth == "12":
+elif mounth == "12":
     tuesday[3] = "Инженерная и компьютерная графика - лаб. раб"
-    for i in tuesday:
-        tuesday_upd.append(i)
+    for i in tuesday_usually:
+        tuesday_actually.append(i)
 
 else:
-    for i in tuesday[1::]:
-        tuesday_upd.append(i)
+    for i in tuesday_usually[1::]:
+        tuesday_actually.append(i)
 
 
 # Среда
-wednesday_upd = []
-if Today.mounth == "11" and (
-    Today.day == "16" or Today.day == "23" or Today.day == "30"
+wednesday_actually = []
+if mounth == "11" and (
+    day == "16" or day == "23" or day == "30"
 ):
-    wednesday[1] == "Физическая культура и спорт - практика"
-    for i in wednesday:
-        wednesday_upd.append(i)
+    wednesday_usually[1] == "Физическая культура и спорт - практика"
+    for i in wednesday_usually:
+        wednesday_actually.append(i)
 else:
-    for i in wednesday:
-        wednesday_upd.append(i)
+    for i in wednesday_usually:
+        wednesday_actually.append(i)
 
 # Пятница
-friday_upd = []
-if Today.day == "11" and Today.mounth == "11":
+friday_actually = []
+if day == "11" and mounth == "11":
     friday[0] = "Физика - лекция"
-    for i in friday:
-        friday_upd.append(i)
+    for i in friday_usually:
+        friday_actually.append(i)
 else:
-    friday_upd = friday
+    friday_actually = friday_usually
+
+# Словарь с расписанием. Если на конце actually - расписание в этот день недели может меняться.
+# Если на конце usually - расписание в этот день недели всегда одно и то же.
+raspisanie_dict = {
+    "понедельник": monday_actually,
+    "вторник": tuesday_actually,
+    "среда": wednesday_actually,
+    "четверг": thursday_usually,
+    "пятница": friday_actually,
+    "суббота": saturday_usually
+}
+
+
