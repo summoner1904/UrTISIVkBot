@@ -11,6 +11,6 @@ if __name__ == "__main__":
         "пятница": bot.command_raspisanie,
         "суббота": bot.command_raspisanie,
         "клавиатура": bot.command_raspisanie,
-        "ошибка": bot.command_error,
+        "ошибка": bot.command_error
     }
     bot.start(COMMAND_LIST)

@@ -1,6 +1,6 @@
 import random
 import vk_api
-from vk_api.longpoll import VkEventType, VkLongPoll
+from vk_api.longpoll import VkEventType, VkLongPoll, Event
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 from config import TOKEN
 from database import *
@@ -15,7 +15,7 @@ class BaseServer(AbstractBaseServer):
     _vk = vk_api.VkApi(token=TOKEN)
     __longpoll = VkLongPoll(_vk)
 
-    def start(self, COMMAND_LIST: dict):
+    def start(self, COMMAND_LIST: dict) -> None:
         """
         Работает с классом Today - получает актуальную дату. Инициализирует command_list.
         Вызывает метод command_worker.
@@ -25,9 +25,9 @@ class BaseServer(AbstractBaseServer):
         self.commands = COMMAND_LIST
         for event in self.__longpoll.listen():
             Today.update_date()
-            self.command_worker(event)
+            self._command_worker(event)
 
-    def command_worker(self, event):
+    def _command_worker(self, event: Event) -> None:
         """
         Обрабатывает сообщения пользователя. Если находит сообщение пользоваля в command_list, то выполняет команду.
         Если сообщения пользователя нет в command_list, то обращается к ключу "ошибка" в словаре command_list.
@@ -46,7 +46,7 @@ class UtilsServer(BaseServer):
     Класс, отвечающий за отправку сообщения пользователю от лица сообщества.
     """
 
-    def send_msg(self, user_id, message, keyboard=None):
+    def send_msg(self, user_id, message, keyboard=None) -> None:
         """
         Отправляет сообщение пользователю.
         :param user_id (id пользователя, кому отправить сообщение)
@@ -57,9 +57,10 @@ class UtilsServer(BaseServer):
         params = {
             "user_id": user_id,
             "message": message,
-            "random_id": random.randint(1, 10000),
-            "keyboard": keyboard.get_keyboard(),
+            "random_id": random.randint(1, 10000)
         }
+        if keyboard:
+            params["keyboard"] = keyboard.get_keyboard()
         self._vk.method("messages.send", params)
 
 
@@ -69,7 +70,7 @@ class KeyboardMixin(VkKeyboard, AbsctractKeyboardMixin):
     :return: keyboard
     """
 
-    def get_standart_keyboard(self):
+    def get_standart_keyboard(self) -> VkKeyboard:
         """
         Стандартная клавиатура (со всеми днями недели).
         :return: Возвращает стандартную клавиатуру.
@@ -90,7 +91,7 @@ class Server(UtilsServer):
 
     keyboard = KeyboardMixin()
 
-    def command_error(self, event):
+    def command_error(self, event: Event) -> None:
         """
         Команда, подсказывающая пользователю о том, что необходимо написать/выбрать.
         :param event
@@ -102,7 +103,7 @@ class Server(UtilsServer):
             keyboard=self.keyboard.get_standart_keyboard(),
         )
 
-    def command_hi(self, event):
+    def command_hi(self, event: Event) -> None:
         """
         Команда, передающая сообщение "Привет!" в метод send_msg.
         :param event
@@ -112,7 +113,7 @@ class Server(UtilsServer):
             event.user_id, "Привет!", keyboard=self.keyboard.get_standart_keyboard()
         )
 
-    def command_keyboard(self, event):
+    def command_keyboard(self, event: Event) -> None:
         """
         Команда, отвечающая за вывод клавиатуры в боте.
         :param event
@@ -124,7 +125,7 @@ class Server(UtilsServer):
             keyboard=self.keyboard.get_standart_keyboard(),
         )
 
-    def command_raspisanie(self, event):
+    def command_raspisanie(self, event: Event) -> None:
         self.send_msg(
             event.user_id,
             "\n".join(raspisanie_dict[event.text.lower()]),
